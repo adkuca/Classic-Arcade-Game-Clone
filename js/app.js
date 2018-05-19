@@ -56,21 +56,21 @@ Player.prototype.render = function() {
  * @param {string} direction - arrow keys input
  */
 Player.prototype.handleInput = function(direction) {
-    switch(direction) {
+    switch (direction) {
         case 'left':
-            if(this.x > 0) this.x -= 101;
+            if (this.x > 0) this.x -= 101;
             break;
         case 'up':
-            if(this.y > -30) this.y -= 83;
+            if (this.y > -30) this.y -= 83;
             break;
         case 'right':
-            if(this.x < 404) this.x += 101;
+            if (this.x < 404) this.x += 101;
             break;
         case 'down':
-            if(this.y < 385) this.y += 83;
+            if (this.y < 385) this.y += 83;
     }
 
-    if(this.y < 0) won();
+    if (this.y < 0) won();
 };
 
 // Resets the players coordinates/location
@@ -81,14 +81,14 @@ Player.prototype.reset = function() {
 
 // Checks for collisions between the player and the enemies and calls function lost() accordingly
 function checkCollisions() {
-      for (const enemy of allEnemies) {
-          if(player.x + player.hitboxX >= enemy.x - enemy.hitboxX &&
-              player.x - player.hitboxX <= enemy.x + enemy.hitboxX &&
-              player.y + player.hitboxY >= enemy.y - enemy.hitboxY &&
-              player.y - player.hitboxY <= enemy.y + enemy.hitboxY) {
-              lost();
-          }
-      }
+    for (const enemy of allEnemies) {
+        if (player.x + player.hitboxX >= enemy.x - enemy.hitboxX &&
+            player.x - player.hitboxX <= enemy.x + enemy.hitboxX &&
+            player.y + player.hitboxY >= enemy.y - enemy.hitboxY &&
+            player.y - player.hitboxY <= enemy.y + enemy.hitboxY) {
+            lost();
+        }
+    }
 }
 
 // Flashes the canvas underlay and calls the Player.reset() method
