@@ -9,12 +9,11 @@ Project for the Udacity FEND program
 * [Author](#author)
 
 ## How to play
-* Play the game [here]() - Github Live Page
-* Or download the repository and run the index.html in a browser
+* Play the game [here](https://adkuca.github.io/Classic-Arcade-Game-Clone) - Github Live Page or download the repository and run the index.html in a browser
 
 ## Instructions
-Win the game by moving the character using the arrow keys and reach the water avoiding the bugs.
-Collision with the bugs will reset the characters position to the starting point.
+* Win the game by moving the character using the arrow keys and reach the water avoiding the bugs.
+* Collision with the bugs will reset the characters position to the starting point.
 
 ## Features
 * Bugs move at random speed
@@ -24,4 +23,4 @@ Collision with the bugs will reset the characters position to the starting point
 * Any improvements are welcome.
 
 ## Author
-* Adam Kuča - *Creator* - [Memory-Game - repo](https://github.com/adkuca/Memory-Game)
+* Adam Kuča - *Creator* - [Classic Arcade Game Clone - repo](https://github.com/adkuca/Classic-Arcade-Game-Clone)
