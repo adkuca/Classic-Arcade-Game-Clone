@@ -1,14 +1,28 @@
 'use strict';
 
-// Enemies our player must avoid
-const Enemy = function(x, y, speed = this.shuffleSpeed()) {
-    this.sprite = 'images/enemy-bug.png';
-    this.speed = speed;
+const Character = function(x, y) {
     this.x = x;
     this.y = y;
+    this.sprite = null;
+    this.hitboxX = null;
+    this.hitboxY = null;
+};
+
+Character.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Enemies our player must avoid
+const Enemy = function(x, y, speed = this.shuffleSpeed()) {
+    Character.call(this, x, y);
+    this.sprite = 'images/enemy-bug.png';
+    this.speed = speed;
     this.hitboxX = 50;
     this.hitboxY = 30;
 };
+
+Enemy.prototype = Object.create(Character.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // Method returns and sets Enemy objects speed to a random number between min and max
 Enemy.prototype.shuffleSpeed = function(min = 150, max = 300) {
@@ -30,17 +44,19 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    Character.prototype.render.call(this);
 };
 
 const Player = function(x, y) {
+    Character.call(this, x, y);
     this.args = [...arguments];
     this.sprite = 'images/char-boy.png';
-    this.x = x;
-    this.y = y;
     this.hitboxX = 15;
     this.hitboxY = 30;
 };
+
+Player.prototype = Object.create(Character.prototype);
+Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
     checkCollisions();
@@ -48,7 +64,7 @@ Player.prototype.update = function() {
 
 // Draw the player on the screen
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    Character.prototype.render.call(this);
 };
 
 /**
