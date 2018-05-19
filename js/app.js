@@ -1,3 +1,5 @@
+'use strict';
+
 // Enemies our player must avoid
 const Enemy = function(x, y, speed = this.shuffleSpeed()) {
     this.sprite = 'images/enemy-bug.png';
@@ -6,13 +8,17 @@ const Enemy = function(x, y, speed = this.shuffleSpeed()) {
     this.y = y;
     this.hitboxX = 50;
     this.hitboxY = 30;
-
 };
 
+// Method returns and sets Enemy objects speed to a random number between min and max
 Enemy.prototype.shuffleSpeed = function(min = 150, max = 300) {
     return this.speed = Math.floor(Math.random() * (max - min) + min);
 };
 
+/**
+ * @description Update the enemy's position
+ * @param {number} dt - a time delta between ticks
+ */
 Enemy.prototype.update = function(dt) {
     if (this.x >= 505) {
         this.x = -100;
@@ -22,6 +28,7 @@ Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
 };
 
+// Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -36,13 +43,18 @@ const Player = function(x, y) {
 };
 
 Player.prototype.update = function() {
-    player.checkCollision();
+    checkCollisions();
 };
 
+// Draw the player on the screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+/**
+ * @description Method that handles character movement and calls function won() whether it meets the win condition
+ * @param {string} direction - arrow keys input
+ */
 Player.prototype.handleInput = function(direction) {
     switch(direction) {
         case 'left':
@@ -58,41 +70,52 @@ Player.prototype.handleInput = function(direction) {
             if(this.y < 385) this.y += 83;
     }
 
-    if(this.y < 0) {
-        cUnderlay.classList.toggle('score');
-        setTimeout(() => cUnderlay.classList.toggle('score'), 200);
-        this.reset();
-    }
+    if(this.y < 0) won();
 };
 
-Player.prototype.checkCollision = function() {
-      for (const enemy of allEnemies) {
-          if(this.x + this.hitboxX >= enemy.x - enemy.hitboxX &&
-              this.x - this.hitboxX <= enemy.x + enemy.hitboxX &&
-              this.y + this.hitboxY >= enemy.y - enemy.hitboxY &&
-              this.y - this.hitboxY <= enemy.y + enemy.hitboxY) {
-              cUnderlay.classList.toggle('collision');
-              setTimeout(() => cUnderlay.classList.toggle('collision'), 200);
-              this.reset();
-          }
-      }
-};
-
+// Resets the players coordinates/location
 Player.prototype.reset = function() {
     this.x = this.args[0];
     this.y = this.args[1];
 };
 
+// Checks for collisions between the player and the enemies and calls function lost() accordingly
+function checkCollisions() {
+      for (const enemy of allEnemies) {
+          if(player.x + player.hitboxX >= enemy.x - enemy.hitboxX &&
+              player.x - player.hitboxX <= enemy.x + enemy.hitboxX &&
+              player.y + player.hitboxY >= enemy.y - enemy.hitboxY &&
+              player.y - player.hitboxY <= enemy.y + enemy.hitboxY) {
+              lost();
+          }
+      }
+}
+
+// Flashes the canvas underlay and calls the Player.reset() method
+function won() {
+    cUnderlay.classList.toggle('score');
+    setTimeout(() => cUnderlay.classList.toggle('score'), 200);
+    player.reset();
+}
+
+// Flashes the canvas underlay and calls the Player.reset() method
+function lost() {
+    cUnderlay.classList.toggle('collision');
+    setTimeout(() => cUnderlay.classList.toggle('collision'), 200);
+    player.reset();
+}
+
 const cUnderlay = document.getElementsByClassName('canvas-underlay')[0];
-const bug1 = new Enemy(150, 53, 100);
-const bug2 = new Enemy(350, 122, 150);
-const bug3 = new Enemy(150, 150, 250);
-const bug4 = new Enemy(-100, 219, 200);
-const bug5 = new Enemy(20, 395, 0);
-const allEnemies = [bug1, bug2, bug3, bug4, bug5];
+const allEnemies = [
+    new Enemy(150, 53, 100),
+    new Enemy(350, 122, 150),
+    new Enemy(150, 150, 250),
+    new Enemy(-100, 219, 200)
+];
 const player = new Player(202, 385);
 
-document.addEventListener('keydown', function(e) {
+// This listens for key presses and sends the keys to Player.handleInput() method
+document.addEventListener('keydown', e => {
     const allowedKeys = {
         37: 'left',
         38: 'up',
