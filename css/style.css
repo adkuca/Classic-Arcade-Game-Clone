@@ -1,3 +1,23 @@
 body {
     text-align: center;
 }
+
+.canvas-underlay {
+    position: absolute;
+    background-color: #938fff;
+    height: 566px;
+    width: 525px;
+    left: 0;
+    right: 0;
+    margin: 40px auto 0;
+    z-index: -1;
+    border-radius:10px;
+    transition: background-color 0.1s ease;
+}
+.canvas-underlay.score {
+    background-color: lawngreen;
+}
+
+.canvas-underlay.collision {
+    background-color: red;
+}
